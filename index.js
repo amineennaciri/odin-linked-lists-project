@@ -9,40 +9,45 @@ function Node(element){
 function LinkedList(){
     head = null
     length = 0
+    // append(value) adds a new node containing value to the end of the list
     this.append = function(value){
          if(head){
             let current = head;
-            while(current.next != null){
-                current = current.next;
+            while(current.nextNode != null){
+                current = current.nextNode;
             }
-            current.next = new Node(value);
+            current.nextNode = new Node(value);
         }else{
             head = new Node(value);
         }
         length++;
     }
+    // prepend(value) adds a new node containing value to the start of the list
     this.prepend = function(value){
         if(head){
             let current = head;
-            current.next = head.next;
+            current.nextNode = head.nextNode;
             head = new Node(value);
-            head.next = current.next;
+            head.nextNode = current.nextNode;
         }else{
             head = new Node(value);
         }
         length++; 
     }
+    // size returns the total number of nodes in the list
     this.size = function(){
         return length;
     }
+    // head returns the first node in the list
     this.head = function(){
         return head;
     }
+    // tail returns the last node in the list
     this.tail = function(){
         if(head){
             let current = head;
-            while(current.next != null){
-                current = current.next;
+            while(current.nextNode != null){
+                current = current.nextNode;
             }
             return current;
         }else{
@@ -51,11 +56,11 @@ function LinkedList(){
     }
     // at(index) returns the node at the given index
     this.at = function(index){
-        if(index<=length || index<0){
+        if(index<=length && index>0){
             let counter = 1;
             let current = head;
             while(counter < index){
-                current = current.next;
+                current = current.nextNode;
                 counter++;
             }
             return current;
@@ -68,15 +73,26 @@ function LinkedList(){
         if(length ===0){
             return `the list is empty there is no element to be removed!`
         }else{
-            let current = head;
-            let previous;
-            while(current.next != null){
-                previous = current;
-                current = current.next;
+           /*  let current = head;
+            //let previous;
+            while(current.nextNode != null){
+                //previous = current;
+                current = current.nextNode;
             }
-            previous = null;
-            current = null;
+            //previous = null;
             length--;
+            return current = new Node(null); */
+            this.at(length-1).nextNode = null;
+            length--;
+        }
+    }
+    // this function shows the linked list elements from head to tail
+    this.showElement = function(){
+        let current = head;
+        while(current.nextNode != null){
+            console.log(current.value());
+            current = current.nextNode;
+            console.log(current.value())
         }
     }
 }
@@ -116,8 +132,15 @@ test.append(3);
 console.log(test.head().value());//1
 console.log(test.tail().value());//3
 console.log(`Testing the at function again`);
-console.log(test.at(2).value());
-console.log(test.at(3).value());
-console.log(test.at(1).value());
-console.log(test.at(0).value());
+console.log(test.at(2).value()); // 2
+console.log(test.at(3).value()); // 3
+console.log(test.at(1).value()); // 1 
+console.log(test.at(0)); // error
 console.log(test.at(4));
+/* console.log(`A new test`)
+let current = LinkedList.head;
+console.log(current);
+while(current.nextNode != null){
+    current = current.nextNode;
+    console.log(current)
+} */
