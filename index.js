@@ -95,6 +95,95 @@ function LinkedList(){
             console.log(current.value())
         }
     }
+    // contains(value) returns true if the passed in value is in the list and otherwise returns false.
+    // ... code here ...
+    this.contains = function(value){
+        for(let i = 1;i<=length;i++){
+            if(this.at(i).value() === value){
+                return true
+            }
+        }
+        return false;
+    }
+    // find(value) returns the index of the node containing value, or null if not found.
+    this.find = function(value){
+        for(let i = 1;i<=length;i++){
+            if(this.at(i).value() === value){
+                return i;
+            }
+        }
+        return null;
+    }
+    // toString represents your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: ( value ) -> ( value ) -> ( value ) -> null
+    this.toString = function(){
+        if(length ==0){
+            return `-> null`
+        }{
+            let i = 1;
+            let listDisplay = '';
+            while(this.at(i).nextNode != null){
+                listDisplay += `${this.at(i).value()} -> `;
+                i++;
+            }
+            listDisplay += `${this.at(i).value()} -> null`;
+            return listDisplay;
+            //return `( ${} ) -> ( ${} ) -> ( ${} ) -> null`;
+        }
+    }
+    // insertAt(value, index) that inserts a new node with the provided value at the given index.
+    this.insertAt = function(value, index){
+        /* let pointToAfterIndex = this.at(index+1);
+        let newNode = new Node(value);
+        this.at(index) = newNode
+        this.at(index-1).nextNode = this.at(index);
+        this.at(index).nextNode = pointToAfterIndex; */
+        let i = 0;
+        let storeValue = []
+        //let storeValue = this.at(index+1).value();
+        while(this.at(index).nextNode != null){
+            //console.log(length);
+            storeValue[i] = this.at(length).value();
+            //console.log(storeValue[i]);
+            this.pop();
+            i++;
+        }
+        //console.log(storeValue);
+        this.pop();
+        //console.log(`this is length value ${length}`);
+        //console.log(storeValue);
+        if(length===0){
+            this.prepend(value);
+        }else{
+            this.append(value);
+        }
+        //console.log(`this is length value ${length}`);
+        //console.log(this.toString());
+        //this.at(index).value() = value;
+        for(let i = storeValue.length-1;i>=0;i--){
+            this.append(storeValue[i]);
+        }/* 
+        this.append(value);
+        this.append(storeValue); */
+    }
+    // removeAt(index) that removes the node at the given index.
+    this.removeAt = function(index){
+        let i = 0;
+        let storeValue = []
+        while(this.at(index).nextNode != null){
+            storeValue[i] = this.at(length).value();
+            this.pop();
+            i++;
+        }
+        this.pop();
+        for(let i = storeValue.length-1;i>=0;i--){
+            if(length===0){
+                this.prepend(storeValue[i]);
+            }else{
+                this.append(storeValue[i]);
+            }
+        }
+    }
+
 }
 
 
@@ -137,10 +226,47 @@ console.log(test.at(3).value()); // 3
 console.log(test.at(1).value()); // 1 
 console.log(test.at(0)); // error
 console.log(test.at(4));
-/* console.log(`A new test`)
-let current = LinkedList.head;
-console.log(current);
-while(current.nextNode != null){
-    current = current.nextNode;
-    console.log(current)
-} */
+console.log(`Testing the contains function`)
+console.log(test.contains(3)); // true
+console.log(test.contains(2)); // true
+console.log(test.contains(1)); // true
+console.log(test.contains(0)); // false
+console.log(test.contains(null)); // false
+console.log(`Testing the find function`)
+console.log(test.find(3)); // 3
+console.log(test.find(2)); // 2
+console.log(test.find(1)); // 1
+console.log(test.find(0)); // null
+console.log(test.find(null)); // null
+console.log(`Testing the toString function`)
+console.log(test.toString());// 1 -> 2 -> 3 -> null
+console.log(`Testing the insertAt function`)
+test.insertAt(4,2)
+console.log(test.toString());// 1 -> 4 -> 3 -> null
+test.insertAt(2,2); // reset
+test.insertAt(4,3)
+console.log(test.toString());// 1 -> 2 -> 4 -> null
+test.insertAt(3,3); // reset
+test.insertAt(4,1)
+console.log(test.toString());// 4 -> 2 -> 3 -> null
+test.insertAt(1,1); // reset
+console.log(test.toString());// 1 -> 2 -> 3 -> null
+console.log(`Testing the removeAt function`)
+console.log('remove element at index 2');
+test.removeAt(2)
+console.log(test.toString());// 1 -> 3 -> null
+test.insertAt(2,2); // reset
+test.append(3); // reset
+//console.log(test.toString()); // 1 -> 2 -> 3 null
+console.log('remove element at index 3');
+test.removeAt(3)
+console.log(test.toString());// 1 -> 2 -> null
+test.append(3); // reset
+//console.log(test.toString()); // 1 -> 2 -> 3 null
+console.log('remove element at index 1');
+test.removeAt(1)
+console.log(test.toString());// 2 -> 3 -> null
+test.insertAt(1,1); // reset
+test.insertAt(2,2); // reset
+test.append(3); // reset
+console.log(test.toString());// 1 -> 2 -> 3 -> null
